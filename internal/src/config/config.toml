@@ -1,0 +1,6 @@
+[db]
+host = "db"
+port = 3306
+user  = "root"
+password = "pw123"
+db_name  = "publishers"

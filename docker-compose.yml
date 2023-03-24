@@ -1,0 +1,36 @@
+version: '3'
+services:
+  web:
+    build: .
+    depends_on:
+       db:
+           condition: service_healthy
+    ports:
+      - "8080:8080"
+    volumes: 
+        - .:/app
+    environment:
+        FLASK_ENV: development
+    links:
+        - db
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_USER: user
+      MYSQL_ROOT_PASSWORD: pw123
+      MYSQL_DATABASE: publishers
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - my-volume:/var/lib/mysql
+    healthcheck:
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+            timeout: 20s
+            retries: 10
+volumes:
+  my-volume:
+
+
+
