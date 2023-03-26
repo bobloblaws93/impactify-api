@@ -1,3 +1,4 @@
+[![Go](https://github.com/ronnpang1/impactify-api/actions/workflows/go.yml/badge.svg)](https://github.com/ronnpang1/impactify-api/actions/workflows/go.yml)
 ## Document Purpose
 
 The purpose of this document is mean't to discuss how to run this api locally.
