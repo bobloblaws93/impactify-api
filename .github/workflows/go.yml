@@ -7,6 +7,7 @@ on:
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -14,7 +15,8 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: 1.20
+          go-version: 1.19
+          
       - name: get dependencies
         run: go mod download
 
@@ -23,6 +25,4 @@ jobs:
 
       - name: Test
         run: go test -v ./...
-
-
 
