@@ -10,6 +10,7 @@ import (
 	"github.com/impactify-api/internal/src/models"
 )
 
+// ExchangeRateProvider is a struct that interacts with the exchange-rate api provider
 type ExchangeRateProvider struct {
 	ProviderName string
 	config       config.Config

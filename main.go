@@ -20,21 +20,21 @@ import (
 )
 
 func main() {
-	fmt.Println("Hello World")
 	r := gin.Default()
+
+	// initialize logger
 	logger, _ := zap.NewProduction()
 
+	// initialize config
 	config := config.InitConfig()
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", config.Database.User, config.Database.Password, config.Database.Host, config.Database.Port, config.Database.Dbname)
-	fmt.Println("dsn: ", dsn)
-	// time.Sleep(40 * time.Second)
 
+	// open DB connection
 	db, err := sql.Open("mysql", dsn)
 
 	if err != nil {
 		logger.Fatal("Unable to open mysql connection", zap.Error(err))
-		fmt.Printf("Unable to open mysql connection: %s", err)
 		panic("Unable to open mysql connection")
 	}
 
@@ -47,9 +47,11 @@ func main() {
 		panic("Unable to ping mysql")
 	}
 
+	// create publisher and currency services
 	publisherService := publisher_service.NewService(db)
 	currencyService := currency_service.NewCurrencyService()
 
+	// create providers
 	fixerProvider := providers.NewFixerProvider(config)
 	exchangeRateProvider := providers.NewExchangeRateProvider(config)
 
@@ -61,9 +63,11 @@ func main() {
 	// logger.Info("Inserted publishers...")
 	// InsertPubsInfo(db)
 	// logger.Info("Inserted publishers info...")
-	//swagger
+
+	//swagger routes
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
+	// publisher routes
 	r.POST("/publisher/data/:id/:currency", handler.GetPublisherInformation(publisherService, currencyService, logger))
 	r.POST("/publisher/data/all/:currency", handler.GetAllPublisherInformation(publisherService, currencyService, logger))
 	r.GET("/publisher/:id", handler.GetPublisherByID(publisherService))

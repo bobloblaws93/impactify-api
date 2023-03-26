@@ -20,6 +20,7 @@ type IPublisherService interface {
 	RetrieveAllPublishers() ([]models.Publisher, error)
 }
 
+// create new publisher service
 func NewService(client *sql.DB) *PublisherService {
 	pubRepo := publishers.NewRepository(client)
 	return &PublisherService{
@@ -27,6 +28,7 @@ func NewService(client *sql.DB) *PublisherService {
 	}
 }
 
+// RetrievePublisher is a service function that retrieves a publisher by id
 func (s *PublisherService) RetrievePublisher(id string) (*models.Publisher, error) {
 	publisher, err := s.PublisherRepo.GetPublisher(id)
 	if err != nil {
@@ -35,6 +37,7 @@ func (s *PublisherService) RetrievePublisher(id string) (*models.Publisher, erro
 	return publisher, nil
 }
 
+// RetrievePublisherRevenue is a service function that retrieves a publisher's revenue by id
 func (s *PublisherService) RetrievePublisherRevenue(id string, startDate time.Time, endDate time.Time) (*models.PublisherInformation, error) {
 	pubInfo, err := s.PublisherRepo.GetPublisherInformationByID(id, startDate, endDate)
 	if err != nil {
@@ -43,6 +46,7 @@ func (s *PublisherService) RetrievePublisherRevenue(id string, startDate time.Ti
 	return pubInfo, nil
 }
 
+// RetrieveAllPublisherInformation is a service function that retrieves all publishers' revenue
 func (s *PublisherService) RetrieveAllPublisherInformation(startDate time.Time, endDate time.Time) ([]*models.PublisherInformation, error) {
 	allPubsInfo, err := s.PublisherRepo.GetAllPublisherInformation(startDate, endDate)
 	if err != nil {
@@ -52,6 +56,7 @@ func (s *PublisherService) RetrieveAllPublisherInformation(startDate time.Time, 
 	return allPubsInfo, nil
 }
 
+// RetrieveAllPublishers is a service function that retrieves all publishers
 func (s *PublisherService) RetrieveAllPublishers() ([]models.Publisher, error) {
 	allPubs, err := s.PublisherRepo.GetPublishers()
 	if err != nil {

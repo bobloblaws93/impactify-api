@@ -11,6 +11,7 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 )
 
+// Unit tests for publishers repository
 func Test_GetPublishersByID(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
@@ -24,7 +25,7 @@ func Test_GetPublishersByID(t *testing.T) {
 		WithArgs("1").
 		WillReturnRows(sqlmock.NewRows([]string{"id", "name"}).AddRow(int64(1), "test-pub"))
 
-	publisher, err := repository.GetPublisherByID("1")
+	publisher, err := repository.GetPublisher("1")
 	if err != nil {
 		t.Errorf("Error was not expected while getting publisher: %s", err)
 	}

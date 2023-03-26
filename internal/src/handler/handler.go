@@ -52,12 +52,14 @@ func GetPublisherInformation(service service.IPublisherService,
 		var timePeriod models.PublisherTimeRequest
 		c.Header("Content-Type", "application/json")
 
+		// bind time request
 		if err = c.BindJSON(&timePeriod); err != nil {
 			fmt.Printf("Error: %s", err)
 			c.JSON(404, "bad request")
 			return
 		}
 
+		// parse start date
 		startDate, err := time.Parse("2006-01-02", timePeriod.StartDate)
 		if err != nil {
 			logger.Sugar().Errorf("unable to parse enddate (format: 'yyyy-mm-dd')', %s", err)
@@ -65,6 +67,7 @@ func GetPublisherInformation(service service.IPublisherService,
 			return
 		}
 
+		// parse end date
 		endDate, err := time.Parse("2006-01-02", timePeriod.EndDate)
 		if err != nil {
 			logger.Sugar().Errorf("unable to parse enddate (format: 'yyyy-mm-dd')', %s", err)
@@ -72,20 +75,24 @@ func GetPublisherInformation(service service.IPublisherService,
 			return
 		}
 
+		// retrieve publisher information
 		publisher, err := service.RetrievePublisherRevenue(c.Param("id"), startDate, endDate)
 
+		// handle error if we cannot retrieve publisher information
 		if err != nil {
 			logger.Sugar().Errorf("unable to retrieve publisher information", err)
 			c.JSON(404, "unable to retrieve publisher information")
 			return
 		}
 
+		// if currency is USD, return the revnue as is
 		if strings.ToUpper(c.Param("currency")) == "USD" {
 			publisher.Revenue = publisher.Revenue * 1
 			c.JSON(200, publisher)
 			return
 		}
 
+		// if not USD, convert the revenue to the currency given
 		currencyModel := currencyService.ReturnRate("fixer", c.Param("currency"))
 
 		publisher.Revenue = publisher.Revenue * currencyModel.Rate
@@ -95,7 +102,7 @@ func GetPublisherInformation(service service.IPublisherService,
 }
 
 // GetPublishers godoc
-// @Summary      GetAllPublisherInformation is a route meant to retrieve information on a specific publisher by id
+// @Summary      GetAllPublisherInformation is a route meant to retrieve information on ALL publishers
 // @Description  Get all publishers data information
 // @Tags         publishers
 // @Produce      json
@@ -133,6 +140,7 @@ func GetAllPublisherInformation(service service.IPublisherService, currencyServi
 			return
 		}
 
+		// Retrieve data for all pubs
 		publisherInfoList, err := service.RetrieveAllPublisherInformation(startDate, endDate)
 		if err != nil {
 			logger.Sugar().Errorf("unable to retrieve all publisher information", err)

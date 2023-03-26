@@ -23,6 +23,7 @@ func (r *Repository) GetDBClient() *sql.DB {
 	return r.dbClient
 }
 
+// GetPublisher is a repository function that retrieves a publisher by id
 func (r *Repository) GetPublisher(id string) (*models.Publisher, error) {
 	// sql query to get a publisher by id
 	var publisher models.Publisher
@@ -34,24 +35,10 @@ func (r *Repository) GetPublisher(id string) (*models.Publisher, error) {
 	return &publisher, nil
 }
 
-func (r *Repository) GetPublisherByID(id string) (*models.Publisher, error) {
-	// sql query to get a publisher by id
-	// SELECT * FROM publisher WHERE id = ?
-	var publisher models.Publisher
-	err := r.dbClient.QueryRow("SELECT id, name FROM publishers WHERE id = ?", id).Scan(&publisher.ID, &publisher.Name)
-	if err != nil {
-		return &models.Publisher{}, err
-	}
-
-	return &publisher, nil
-}
-
+// GetPublisherInformationByID is a repository function that retrieves a publisher's information by id
 func (r *Repository) GetPublisherInformationByID(id string, startDate, endDate time.Time) (*models.PublisherInformation, error) {
 	var publisherInfo models.PublisherInformation
 	query := fmt.Sprintf(`SELECT publisher_id, SUM(impressions), SUM(requests), SUM(clicks), SUM(revenue) FROM publishers_info WHERE publisher_id = %s AND date_created BETWEEN '%s' AND '%s' GROUP BY publisher_id`, id, startDate.String(), endDate.String())
-	fmt.Println("qq", query)
-	// "SELECT publisher_id, SUM(impressions), SUM(requests), SUM(clicks), SUM(revenue) FROM publishers_info \n\tWHERE publisher_id = 1 AND date_created BETWEEN '2017-08-31 00:00:00 +0000 UTC' AND '2017-09-01 00:00:00 +0000 UTC' GROUP BY publisher_id"
-
 	err := r.dbClient.QueryRow(query).
 		Scan(&publisherInfo.Publisher.ID,
 			&publisherInfo.Impressions,
@@ -67,9 +54,9 @@ func (r *Repository) GetPublisherInformationByID(id string, startDate, endDate t
 	return &publisherInfo, nil
 }
 
+// GetAllPublisherInformation is a repository function that retrieves all publishers' information
 func (r *Repository) GetAllPublisherInformation(startDate, endDate time.Time) ([]*models.PublisherInformation, error) {
-	// sql query to sum up the revenue for a publisher between a start and end date
-	// SELECT SUM(revenue) FROM publisher WHERE id = ? AND date BETWEEN ? AND ?
+	// sql query to sum up the fields of interest for a publisher between a start and end date
 	query := fmt.Sprintf(`SELECT publisher_id, SUM(impressions), SUM(requests), SUM(clicks), SUM(revenue) FROM publishers_info 
 	WHERE date_created BETWEEN '%s' AND '%s' GROUP BY publisher_id`, startDate.String(), endDate.String())
 	fmt.Println("qq", query)
@@ -101,9 +88,9 @@ func (r *Repository) GetAllPublisherInformation(startDate, endDate time.Time) ([
 
 }
 
+// GetPublishers is a repository function that retrieves all publishers
 func (r *Repository) GetPublishers() ([]models.Publisher, error) {
-	// sql query to sum up the revenue for a publisher between a start and end date
-	// SELECT SUM(revenue) FROM publisher WHERE id = ? AND date BETWEEN ? AND ?
+	// sql query to retrieve all publishers
 	rows, err := r.dbClient.Query("SELECT id, name FROM publishers")
 	if err != nil {
 		return []models.Publisher{}, nil

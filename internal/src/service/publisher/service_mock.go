@@ -6,6 +6,7 @@ import (
 	"github.com/impactify-api/internal/src/models"
 )
 
+// PublisherMock is a mock that implements IPublisherService. Used for testing
 type PublisherMock struct{}
 
 func NewPublisherMock() *PublisherMock {

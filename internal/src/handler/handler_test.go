@@ -17,6 +17,7 @@ import (
 	publisher_service "github.com/impactify-api/internal/src/service/publisher"
 )
 
+// unit tests for handlers
 func Test_GetPublisherByID(t *testing.T) {
 
 	pubService := publisher_service.NewPublisherMock()

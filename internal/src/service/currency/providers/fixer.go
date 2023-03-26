@@ -10,6 +10,7 @@ import (
 	"github.com/impactify-api/internal/src/models"
 )
 
+// Fixer is a struct that interacts with the fixer api provider
 type Fixer struct {
 	ProviderName string
 	config       config.Config

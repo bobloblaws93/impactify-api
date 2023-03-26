@@ -4,6 +4,7 @@ import (
 	"github.com/impactify-api/internal/src/models"
 )
 
+// CurrencyMock is a mock that implements ICurrencyService. Used for testing
 type CurrencyMock struct {
 	CurrencyProviderList map[string]IProvider
 }

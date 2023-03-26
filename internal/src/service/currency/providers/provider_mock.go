@@ -2,6 +2,7 @@ package providers
 
 import "github.com/impactify-api/internal/src/models"
 
+// ProviderMock is a mock that implements ICurrencyService. Used for testing
 type ProviderMock struct{}
 
 func NewProviderMock() *ProviderMock {
