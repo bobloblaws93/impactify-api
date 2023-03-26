@@ -1,16 +1,11 @@
 package models
 
-import (
-	"time"
-)
-
 type PublisherInformation struct {
 	Publisher   Publisher `json:"publisher"`
-	Date        time.Time `json:"date"`
+	Impressions int64     `json:"impressions"`
 	Requests    int64     `json:"requests"`
 	Revenue     float64   `json:"revenue"`
 	Clicks      int64     `json:"clicks"`
-	Impressions int64     `json:"impressions"`
 }
 
 type Publisher struct {
@@ -19,8 +14,8 @@ type Publisher struct {
 }
 
 type PublisherTimeRequest struct {
-	StartDate string `json:"start_date"`
-	EndDate   string `json:"end_date"`
+	StartDate string `json:"start_date" default:"2018-01-01"`
+	EndDate   string `json:"end_date" default:"2020-01-01"`
 }
 
 type Currency struct {

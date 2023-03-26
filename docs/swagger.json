@@ -1,0 +1,228 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/publisher/data/all/{currency}": {
+            "post": {
+                "description": "Get all publishers data information",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "publishers"
+                ],
+                "summary": "GetAllPublisherInformation is a route meant to retrieve information on a specific publisher by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "param for currency",
+                        "name": "currency",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "time range for publisher data",
+                        "name": "publishertimerequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.PublisherTimeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.PublisherInformation"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "unable to parse startdate (format: 'yyyy-mm-dd')",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "unable to retrieve all publisher information",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/publisher/data/{id}/{currency}": {
+            "post": {
+                "description": "Get publishers data information",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "publishers"
+                ],
+                "summary": "GetPublisherInformation is a route meant to retrieve information on a specific publisher by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "param for publisher id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "param for currency",
+                        "name": "currency",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "time range for publisher data",
+                        "name": "publishertimerequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.PublisherTimeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.PublisherInformation"
+                        }
+                    },
+                    "400": {
+                        "description": "unable to parse startdate (format: 'yyyy-mm-dd')",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "unable to retrieve publisher information",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/publisher/{id}": {
+            "get": {
+                "description": "Get publishers",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "publishers"
+                ],
+                "summary": "GetPublisherByID is a route meant to a specific publisher by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "param for publisher id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Publisher"
+                        }
+                    },
+                    "404": {
+                        "description": "publisher not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/publishers": {
+            "get": {
+                "description": "List publishers",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "publishers"
+                ],
+                "summary": "GetPublishers is a route meant to fetch all publishers",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Publisher"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "could not retrieve publisher list",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Publisher": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.PublisherInformation": {
+            "type": "object",
+            "properties": {
+                "clicks": {
+                    "type": "integer"
+                },
+                "impressions": {
+                    "type": "integer"
+                },
+                "publisher": {
+                    "$ref": "#/definitions/models.Publisher"
+                },
+                "requests": {
+                    "type": "integer"
+                },
+                "revenue": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.PublisherTimeRequest": {
+            "type": "object",
+            "properties": {
+                "end_date": {
+                    "type": "string",
+                    "default": "2020-01-01"
+                },
+                "start_date": {
+                    "type": "string",
+                    "default": "2018-01-01"
+                }
+            }
+        }
+    }
+}

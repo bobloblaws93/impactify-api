@@ -1,0 +1,151 @@
+definitions:
+  models.Publisher:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.PublisherInformation:
+    properties:
+      clicks:
+        type: integer
+      impressions:
+        type: integer
+      publisher:
+        $ref: '#/definitions/models.Publisher'
+      requests:
+        type: integer
+      revenue:
+        type: number
+    type: object
+  models.PublisherTimeRequest:
+    properties:
+      end_date:
+        default: "2020-01-01"
+        type: string
+      start_date:
+        default: "2018-01-01"
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /publisher/{id}:
+    get:
+      description: Get publishers
+      parameters:
+      - description: param for publisher id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Publisher'
+        "404":
+          description: publisher not found
+          schema:
+            type: string
+      summary: GetPublisherByID is a route meant to a specific publisher by id
+      tags:
+      - publishers
+  /publisher/data/{id}/{currency}:
+    post:
+      description: Get publishers data information
+      parameters:
+      - description: param for publisher id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: param for currency
+        in: path
+        name: currency
+        required: true
+        type: string
+      - description: time range for publisher data
+        in: body
+        name: publishertimerequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.PublisherTimeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.PublisherInformation'
+        "400":
+          description: 'unable to parse startdate (format: ''yyyy-mm-dd'')'
+          schema:
+            type: string
+        "404":
+          description: unable to retrieve publisher information
+          schema:
+            type: string
+      summary: GetPublisherInformation is a route meant to retrieve information on
+        a specific publisher by id
+      tags:
+      - publishers
+  /publisher/data/all/{currency}:
+    post:
+      description: Get all publishers data information
+      parameters:
+      - description: param for currency
+        in: path
+        name: currency
+        required: true
+        type: string
+      - description: time range for publisher data
+        in: body
+        name: publishertimerequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.PublisherTimeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.PublisherInformation'
+            type: array
+        "400":
+          description: 'unable to parse startdate (format: ''yyyy-mm-dd'')'
+          schema:
+            type: string
+        "404":
+          description: unable to retrieve all publisher information
+          schema:
+            type: string
+      summary: GetAllPublisherInformation is a route meant to retrieve information
+        on a specific publisher by id
+      tags:
+      - publishers
+  /publishers:
+    get:
+      description: List publishers
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Publisher'
+            type: array
+        "404":
+          description: could not retrieve publisher list
+          schema:
+            type: string
+      summary: GetPublishers is a route meant to fetch all publishers
+      tags:
+      - publishers
+swagger: "2.0"

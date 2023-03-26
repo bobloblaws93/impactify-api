@@ -7,7 +7,8 @@ import (
 )
 
 type Config struct {
-	Database DB `mapstructure:"db"`
+	Database DB  `mapstructure:"db"`
+	API      API `mapstructure:"api"`
 }
 
 type DB struct {
@@ -16,6 +17,11 @@ type DB struct {
 	User     string `mapstructure:"user"`
 	Password string `mapstructure:"password"`
 	Dbname   string `mapstructure:"db_name"`
+}
+
+type API struct {
+	FixerKey        string `mapstructure:"fixer_api_key"`
+	ExchangeRateKey string `mapstructure:"exchange_rate_api_key"`
 }
 
 func InitConfig() Config {
