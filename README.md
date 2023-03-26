@@ -9,7 +9,7 @@ To run this project locally simply navigate to the root of this folder and run:
 $ docker-compose up -d --no-deps --build
 ```
 
-This will create two running containers (the api and the postgres container). Swagger docs are available at: http://localhost:8080/swagger/index.html, but the following routes are also available on intialization:
+This will create two running containers (the api and the mysql container). Swagger docs are available at: http://localhost:8080/swagger/index.html, but the following routes are also available on intialization:
 
  `publisher data route => [POST] http://localhost:8080/publisher/data/:id/:currency`
 
