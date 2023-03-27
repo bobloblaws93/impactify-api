@@ -6,5 +6,5 @@ password = "pw123"
 db_name  = "publishers"
 
 [api]
-fixer_api_key = fixer api key here
-exchange_rate_api_key = exchange rate api key
+fixer_api_key = "fixer api key here"
+exchange_rate_api_key = "exchange rate api key"

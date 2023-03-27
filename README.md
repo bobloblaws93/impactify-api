@@ -36,8 +36,8 @@ $ docker-compose up -d --no-deps --build db
 4) add in api keys for fixer and exchange-rate api in ```config.toml```
     ```
     [api]
-    fixer_api_key = exampleapikey1
-    exchange_rate_api_key = exampleapikey2
+    fixer_api_key = "exampleapikey1"
+    exchange_rate_api_key = "exampleapikey2"
     ```
 
 5) Run from root: 
