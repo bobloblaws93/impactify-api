@@ -40,7 +40,12 @@ $ docker-compose up -d --no-deps --build db
     exchange_rate_api_key = "exampleapikey2"
     ```
 
-5) Run from root: 
+5) Run from root (windows): 
 ```console
-$ go run .\main.go
+$ go run .\main.go 
+```
+or 
+
+```console
+$ go run ./main.go 
 ```
