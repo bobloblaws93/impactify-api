@@ -28,12 +28,19 @@ If one wants to run the api locally, and having a running instance of the databa
 ```console
 $ docker-compose up -d --no-deps --build db
 ```
-3) change config from db to localhost in config 
+3) change config from db to localhost in ```config.toml```
     ```
     [db]
     host = "localhost"
     ```
-4) Run from root: 
+4) add in api keys for fixer and exchange-rate api in ```config.toml```
+    ```
+    [api]
+    fixer_api_key = exampleapikey1
+    exchange_rate_api_key = exampleapikey2
+    ```
+
+5) Run from root: 
 ```console
 $ go run .\main.go
 ```
