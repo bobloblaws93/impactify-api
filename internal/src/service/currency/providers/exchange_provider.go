@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/impactify-api/internal/src/config"
+	"github.com/impactify-api/internal/src/constants"
 	"github.com/impactify-api/internal/src/models"
 )
 
@@ -18,7 +19,7 @@ type ExchangeRateProvider struct {
 
 func NewExchangeRateProvider(config config.Config) *ExchangeRateProvider {
 	return &ExchangeRateProvider{
-		ProviderName: "ExchangeRateProviderAPI",
+		ProviderName: constants.EXCHANGE_RATE,
 		config:       config,
 	}
 }

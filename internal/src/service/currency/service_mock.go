@@ -23,6 +23,10 @@ func (c *CurrencyMock) AddToCurrencyProviders(provider IProvider) {
 	c.CurrencyProviderList[provider.GetProvider()] = provider
 }
 
+func (c *CurrencyMock) GetProviderMapping() map[string]IProvider {
+	return c.CurrencyProviderList
+}
+
 func (c *CurrencyMock) ReturnRate(providerName string, symbol string) *models.Currency {
 	return &models.Currency{
 		Symbol: symbol,

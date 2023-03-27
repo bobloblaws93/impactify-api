@@ -20,7 +20,7 @@ func (p *PublisherMock) RetrievePublisher(id string) (*models.Publisher, error) 
 	}, nil
 }
 
-func (p *PublisherMock) RetrievePublisherRevenue(id string, startDate time.Time, endDate time.Time) (*models.PublisherInformation, error) {
+func (p *PublisherMock) RetrievePublisherInformation(id string, startDate time.Time, endDate time.Time) (*models.PublisherInformation, error) {
 	return &models.PublisherInformation{
 		Publisher: models.Publisher{
 			ID:   123,
@@ -47,6 +47,23 @@ func (p *PublisherMock) RetrieveAllPublisherInformation(startDate time.Time, end
 		},
 	}, nil
 }
+
+func (p *PublisherMock) RetrieveAllPublisherRows(id string, startDate time.Time, endDate time.Time) ([]*models.PublisherInformation, error) {
+	return []*models.PublisherInformation{
+		{
+			Publisher: models.Publisher{
+				ID:   123,
+				Name: "test",
+			},
+			Impressions: 100,
+			Requests:    100,
+			Clicks:      100,
+			Revenue:     100,
+			Date:        "2020-01-01",
+		},
+	}, nil
+}
+
 func (p *PublisherMock) RetrieveAllPublishers() ([]models.Publisher, error) {
 	return []models.Publisher{
 		{

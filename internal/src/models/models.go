@@ -6,16 +6,18 @@ type PublisherInformation struct {
 	Requests    int64     `json:"requests"`
 	Revenue     float64   `json:"revenue"`
 	Clicks      int64     `json:"clicks"`
+	Date        string    `json:"date,omitempty" default:"2018-01-01"` // date_created
 }
 
 type Publisher struct {
 	ID   int64  `json:"id"`
-	Name string `json:"name"`
+	Name string `json:"name,omitempty"`
 }
 
 type PublisherTimeRequest struct {
-	StartDate string `json:"start_date" default:"2018-01-01"`
-	EndDate   string `json:"end_date" default:"2020-01-01"`
+	StartDate        string `json:"start_date" default:"2018-01-01"`
+	EndDate          string `json:"end_date" default:"2020-01-01"`
+	CurrencyProvider string `json:"currency_provider" default:"fixer"`
 }
 
 type Currency struct {

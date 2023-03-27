@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/brianvoe/gofakeit/v6"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/impactify-api/docs"
@@ -59,36 +58,14 @@ func main() {
 	currencyService.AddToCurrencyProviders(fixerProvider)
 	currencyService.AddToCurrencyProviders(exchangeRateProvider)
 
-	// InsertPubs(db)
-	// logger.Info("Inserted publishers...")
-	// InsertPubsInfo(db)
-	// logger.Info("Inserted publishers info...")
-
 	//swagger routes
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	// publisher routes
 	r.POST("/publisher/data/:id/:currency", handler.GetPublisherInformation(publisherService, currencyService, logger))
+	r.POST("/publisher/data/rows/:id/:currency", handler.GetPublisherInformationRows(publisherService, currencyService, logger))
 	r.POST("/publisher/data/all/:currency", handler.GetAllPublisherInformation(publisherService, currencyService, logger))
 	r.GET("/publisher/:id", handler.GetPublisherByID(publisherService))
 	r.GET("/publishers", handler.GetPublishers(publisherService))
 	r.Run()
-}
-
-func InsertPubs(db *sql.DB) {
-	for i := 0; i < 1000000; i++ {
-		_, err := db.Exec("INSERT INTO publishers (id, name) VALUES (?, ?)", i, gofakeit.Company())
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
-}
-
-func InsertPubsInfo(db *sql.DB) {
-	for i := 0; i < 1000000; i++ {
-		_, err := db.Exec("INSERT INTO publisher_info (publisher_id, requests, impressions, clicks, revenue, date_created) VALUES (?, ?, ?, ?, ?, ?)", i, gofakeit.Number(1, 100000000), gofakeit.Number(1, 100000000), gofakeit.Number(1, 100000000), gofakeit.Number(1, 100000000), gofakeit.Date())
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
 }

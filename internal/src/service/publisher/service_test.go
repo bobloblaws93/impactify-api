@@ -67,7 +67,7 @@ func Test_RetrievePublisherRevenue(t *testing.T) {
 		WillReturnRows(sqlmock.NewRows([]string{"publisher_id", "SUM(impressions)", " SUM(requests)", "SUM(clicks)", "SUM(revenue)"}).
 			AddRow(int64(1), "4000", "4000", "4000", "4000"))
 
-	publisherInfo, err := pubService.RetrievePublisherRevenue("1", startDate, endDate)
+	publisherInfo, err := pubService.RetrievePublisherInformation("1", startDate, endDate)
 	if err != nil {
 		t.Errorf("Error was not expected while getting publisher: %s", err)
 	}

@@ -12,7 +12,9 @@ $ docker-compose up -d --no-deps --build
 
 This will create two running containers (the api and the mysql container). Swagger docs are available at: http://localhost:8080/swagger/index.html, but the following routes are also available on intialization:
 
- `publisher data route => [POST] http://localhost:8080/publisher/data/:id/:currency`
+ `publisher data rows route => [POST] http://localhost:8080/publisher/data/rows/:id/:currency`
+
+ `publisher aggregate data route => [POST] http://localhost:8080/publisher/data/:id/:currency`
 
  `publisher retrieve all data route => [POST] http://localhost:8080/publisher/data/all/:currency`
 
@@ -26,7 +28,12 @@ If one wants to run the api locally, and having a running instance of the databa
 ```console
 $ docker-compose up -d --no-deps --build db
 ```
-3) Run from root:
+3) change config from db to localhost in config 
+    ```
+    [db]
+    host = "localhost"
+    ```
+4) Run from root: 
 ```console
 $ go run .\main.go
 ```

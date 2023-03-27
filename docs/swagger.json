@@ -13,11 +13,11 @@
                 "tags": [
                     "publishers"
                 ],
-                "summary": "GetAllPublisherInformation is a route meant to retrieve information on a specific publisher by id",
+                "summary": "GetAllPublisherInformation is a route meant to retrieve information on ALL publishers",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "param for currency",
+                        "description": "param for currency [SGD, USD, EUR, ETC...]",
                         "name": "currency",
                         "in": "path",
                         "required": true
@@ -43,7 +43,67 @@
                         }
                     },
                     "400": {
-                        "description": "unable to parse startdate (format: 'yyyy-mm-dd')",
+                        "description": "start date is after end date",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "unable to retrieve all publisher information",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/publisher/data/rows/{id}/{currency}": {
+            "post": {
+                "description": "Get all publishers data information",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "publishers"
+                ],
+                "summary": "GetAllPublisherInformation is a route meant to retrieve all data rows for a specific publisher",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "param for publisher id. By default, 1 and 2 are ids that are seeded in the database",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "param for currency [SGD, USD, EUR, ETC...]",
+                        "name": "currency",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "time range for publisher data",
+                        "name": "publishertimerequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.PublisherTimeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.PublisherInformation"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "start date is after end date",
                         "schema": {
                             "type": "string"
                         }
@@ -66,18 +126,18 @@
                 "tags": [
                     "publishers"
                 ],
-                "summary": "GetPublisherInformation is a route meant to retrieve information on a specific publisher by id",
+                "summary": "GetPublisherInformation is a route meant to retrieve AGGREGATE information on a specific publisher by id",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "param for publisher id",
+                        "description": "param for publisher id. By default, 1 and 2 are ids that are seeded in the database",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "param for currency",
+                        "description": "param for currency  [SGD, USD, EUR, ETC...]",
                         "name": "currency",
                         "in": "path",
                         "required": true
@@ -100,7 +160,7 @@
                         }
                     },
                     "400": {
-                        "description": "unable to parse startdate (format: 'yyyy-mm-dd')",
+                        "description": "start date is after end date",
                         "schema": {
                             "type": "string"
                         }
@@ -197,6 +257,11 @@
                 "clicks": {
                     "type": "integer"
                 },
+                "date": {
+                    "description": "date_created",
+                    "type": "string",
+                    "default": "2018-01-01"
+                },
                 "impressions": {
                     "type": "integer"
                 },
@@ -214,6 +279,10 @@
         "models.PublisherTimeRequest": {
             "type": "object",
             "properties": {
+                "currency_provider": {
+                    "type": "string",
+                    "default": "fixer"
+                },
                 "end_date": {
                     "type": "string",
                     "default": "2020-01-01"

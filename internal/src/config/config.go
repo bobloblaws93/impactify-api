@@ -30,7 +30,8 @@ func InitConfig() Config {
 	if err != nil {
 		panic(err)
 	}
-	viper.SetConfigFile(workingdir + "/internal/src/config/config.toml")
+
+	viper.SetConfigFile(workingdir + "/config.toml")
 
 	if err := viper.ReadInConfig(); err != nil {
 		panic(err)

@@ -59,7 +59,6 @@ func (r *Repository) GetAllPublisherInformation(startDate, endDate time.Time) ([
 	// sql query to sum up the fields of interest for a publisher between a start and end date
 	query := fmt.Sprintf(`SELECT publisher_id, SUM(impressions), SUM(requests), SUM(clicks), SUM(revenue) FROM publishers_info 
 	WHERE date_created BETWEEN '%s' AND '%s' GROUP BY publisher_id`, startDate.String(), endDate.String())
-	fmt.Println("qq", query)
 
 	rows, err := r.dbClient.Query(query)
 	if err != nil {
@@ -75,6 +74,41 @@ func (r *Repository) GetAllPublisherInformation(startDate, endDate time.Time) ([
 			&publisherInfo.Requests,
 			&publisherInfo.Clicks,
 			&publisherInfo.Revenue); err != nil {
+			return publisherInfoList, err
+		}
+		publisherInfoList = append(publisherInfoList, &publisherInfo)
+	}
+
+	if err = rows.Err(); err != nil {
+		return publisherInfoList, err
+	}
+
+	return publisherInfoList, nil
+
+}
+
+// GetAllPublisherInformation is a repository function that retrieves all publishers' information
+func (r *Repository) GetAllPublisherInformationRows(id string, startDate, endDate time.Time) ([]*models.PublisherInformation, error) {
+	// sql query to sum up the fields of interest for a publisher between a start and end date
+
+	query := fmt.Sprintf(`SELECT publisher_id, impressions, requests, clicks, revenue, date_created FROM publishers_info WHERE publisher_id = %s AND date_created BETWEEN '%s' AND '%s'`, id, startDate.String(), endDate.String())
+
+	rows, err := r.dbClient.Query(query)
+	if err != nil {
+		return []*models.PublisherInformation{}, nil
+	}
+	defer rows.Close()
+
+	publisherInfoList := []*models.PublisherInformation{}
+	for rows.Next() {
+		var publisherInfo models.PublisherInformation
+		if err := rows.Scan(&publisherInfo.Publisher.ID,
+			&publisherInfo.Impressions,
+			&publisherInfo.Requests,
+			&publisherInfo.Clicks,
+			&publisherInfo.Revenue,
+			&publisherInfo.Date,
+		); err != nil {
 			return publisherInfoList, err
 		}
 		publisherInfoList = append(publisherInfoList, &publisherInfo)

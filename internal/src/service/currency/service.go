@@ -11,6 +11,7 @@ type CurrencyService struct {
 type ICurrencyService interface {
 	AddToCurrencyProviders(provider IProvider)
 	ReturnRate(providerName string, symbol string) *models.Currency
+	GetProviderMapping() map[string]IProvider
 }
 
 // IProvider is an interface for currency providers
@@ -29,6 +30,10 @@ func NewCurrencyService() *CurrencyService {
 // AddToCurrencyProviders adds to struct containing all providers
 func (c *CurrencyService) AddToCurrencyProviders(provider IProvider) {
 	c.CurrencyProviderList[provider.GetProvider()] = provider
+}
+
+func (c *CurrencyService) GetProviderMapping() map[string]IProvider {
+	return c.CurrencyProviderList
 }
 
 // ReturnRate returns the rate for a given provider

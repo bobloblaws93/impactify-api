@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/impactify-api/internal/src/config"
+	"github.com/impactify-api/internal/src/constants"
 	"github.com/impactify-api/internal/src/models"
 )
 
@@ -18,7 +19,7 @@ type Fixer struct {
 
 func NewFixerProvider(config config.Config) *Fixer {
 	return &Fixer{
-		ProviderName: "fixer",
+		ProviderName: constants.FIXER,
 		config:       config,
 	}
 }
