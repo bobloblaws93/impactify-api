@@ -13,7 +13,7 @@ import (
 )
 
 // GetPublishers godoc
-// @Summary      GetPublisherByID is a route meant to a specific publisher by id
+// @Summary      /publisher/{id} is a route meant to a specific publisher by id
 // @Description  Get publishers
 // @Tags         publishers
 // @Produce      json
@@ -33,7 +33,7 @@ func GetPublisherByID(service service.IPublisherService) gin.HandlerFunc {
 }
 
 // GetPublishers godoc
-// @Summary      GetPublisherInformation is a route meant to retrieve AGGREGATE information on a specific publisher by id
+// @Summary      /publisher/data/{id}/{currency} is a route meant to retrieve AGGREGATE information on a specific publisher by id
 // @Description  Get publishers data information
 // @Tags         publishers
 // @Produce      json
@@ -45,6 +45,7 @@ func GetPublisherByID(service service.IPublisherService) gin.HandlerFunc {
 // @Failure      400  {string} string "unable to parse enddate (format: 'yyyy-mm-dd')"
 // @Failure      400  {string} string "unable to parse startdate (format: 'yyyy-mm-dd')"
 // @Failure      400  {string} string "start date is after end date"
+// @Failure      400  {string} string "invalid currency"
 // @Router       /publisher/data/{id}/{currency} [post]
 func GetPublisherInformation(service service.IPublisherService,
 	currencyService currency_service.ICurrencyService, logger *zap.Logger) gin.HandlerFunc {
@@ -111,6 +112,11 @@ func GetPublisherInformation(service service.IPublisherService,
 
 		// if not USD, convert the revenue to the currency given
 		currencyModel := currencyService.ReturnRate(provider, c.Param("currency"))
+		if currencyModel.Rate == 0 {
+			logger.Sugar().Errorf("unable to parse currency:', %s", c.Param("currency"))
+			c.JSON(400, "invalid currency")
+			return
+		}
 
 		publisher.Revenue = publisher.Revenue * currencyModel.Rate
 
@@ -119,7 +125,7 @@ func GetPublisherInformation(service service.IPublisherService,
 }
 
 // GetPublishers godoc
-// @Summary      GetAllPublisherInformation is a route meant to retrieve all data rows for a specific publisher
+// @Summary      /publisher/data/rows/{id}/{currency} is a route meant to retrieve all data rows for a specific publisher
 // @Description  Get all publishers data information
 // @Tags         publishers
 // @Produce      json
@@ -132,6 +138,7 @@ func GetPublisherInformation(service service.IPublisherService,
 // @Failure      400  {string} string "unable to parse enddate (format: 'yyyy-mm-dd')"
 // @Failure      400  {string} string "unable to parse startdate (format: 'yyyy-mm-dd')"
 // @Failure      400  {string} string "start date is after end date"
+// @Failure      400  {string} string "invalid currency"
 // @Router       /publisher/data/rows/{id}/{currency} [post]
 func GetPublisherInformationRows(service service.IPublisherService, currencyService currency_service.ICurrencyService, logger *zap.Logger) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -205,7 +212,7 @@ func GetPublisherInformationRows(service service.IPublisherService, currencyServ
 }
 
 // GetPublishers godoc
-// @Summary      GetAllPublisherInformation is a route meant to retrieve information on ALL publishers
+// @Summary      /publisher/data/rows/{id}/{currency} is a route meant to retrieve information on ALL publishers
 // @Description  Get all publishers data information
 // @Tags         publishers
 // @Produce      json
@@ -217,6 +224,7 @@ func GetPublisherInformationRows(service service.IPublisherService, currencyServ
 // @Failure      400  {string} string "unable to parse enddate (format: 'yyyy-mm-dd')"
 // @Failure      400  {string} string "unable to parse startdate (format: 'yyyy-mm-dd')"
 // @Failure      400  {string} string "start date is after end date"
+// @Failure      400  {string} string "invalid currency"
 // @Router       /publisher/data/all/{currency} [post]
 func GetAllPublisherInformation(service service.IPublisherService, currencyService currency_service.ICurrencyService, logger *zap.Logger) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -290,7 +298,7 @@ func GetAllPublisherInformation(service service.IPublisherService, currencyServi
 }
 
 // GetPublishers godoc
-// @Summary      GetPublishers is a route meant to fetch all publishers
+// @Summary      /publishers is a route meant to fetch all publishers
 // @Description  List publishers
 // @Tags         publishers
 // @Produce      json

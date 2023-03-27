@@ -25,7 +25,7 @@ const docTemplate = `{
                 "tags": [
                     "publishers"
                 ],
-                "summary": "GetAllPublisherInformation is a route meant to retrieve information on ALL publishers",
+                "summary": "/publisher/data/rows/{id}/{currency} is a route meant to retrieve information on ALL publishers",
                 "parameters": [
                     {
                         "type": "string",
@@ -55,7 +55,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "start date is after end date",
+                        "description": "invalid currency",
                         "schema": {
                             "type": "string"
                         }
@@ -78,7 +78,7 @@ const docTemplate = `{
                 "tags": [
                     "publishers"
                 ],
-                "summary": "GetAllPublisherInformation is a route meant to retrieve all data rows for a specific publisher",
+                "summary": "/publisher/data/rows/{id}/{currency} is a route meant to retrieve all data rows for a specific publisher",
                 "parameters": [
                     {
                         "type": "string",
@@ -115,7 +115,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "start date is after end date",
+                        "description": "invalid currency",
                         "schema": {
                             "type": "string"
                         }
@@ -138,7 +138,7 @@ const docTemplate = `{
                 "tags": [
                     "publishers"
                 ],
-                "summary": "GetPublisherInformation is a route meant to retrieve AGGREGATE information on a specific publisher by id",
+                "summary": "/publisher/data/{id}/{currency} is a route meant to retrieve AGGREGATE information on a specific publisher by id",
                 "parameters": [
                     {
                         "type": "string",
@@ -172,7 +172,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "start date is after end date",
+                        "description": "invalid currency",
                         "schema": {
                             "type": "string"
                         }
@@ -195,7 +195,7 @@ const docTemplate = `{
                 "tags": [
                     "publishers"
                 ],
-                "summary": "GetPublisherByID is a route meant to a specific publisher by id",
+                "summary": "/publisher/{id} is a route meant to a specific publisher by id",
                 "parameters": [
                     {
                         "type": "string",
@@ -230,7 +230,7 @@ const docTemplate = `{
                 "tags": [
                     "publishers"
                 ],
-                "summary": "GetPublishers is a route meant to fetch all publishers",
+                "summary": "/publishers is a route meant to fetch all publishers",
                 "responses": {
                     "200": {
                         "description": "OK",
